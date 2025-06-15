@@ -2,27 +2,27 @@
 # https://github.com/github/gitignore/blob/main/community/Golang/Go.AllowList.gitignore
 #
 # Binaries for programs and plugins
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
+/pusher/*.exe
+/pusher/*.exe~
+/pusher/*.dll
+/pusher/*.so
+/pusher/*.dylib
 
 # Test binary, built with `go test -c`
-*.test
+/pusher/*.test
 
 # Code coverage profiles and other test artifacts
-*.out
-coverage.*
-*.coverprofile
-profile.cov
+/pusher/*.out
+/pusher/coverage.*
+/pusher/*.coverprofile
+/pusher/profile.cov
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
 # Go workspace file
-go.work
-go.work.sum
+/pusher/go.work
+/pusher/go.work.sum
 
 # env file
 .env
@@ -30,3 +30,26 @@ go.work.sum
 # Editor/IDE
 # .idea/
 # .vscode/
+
+
+
+###> symfony/framework-bundle ###
+/ui/symfony/.env.local
+/ui/symfony/.env.test
+/ui/symfony/.env.local.php
+/ui/symfony/.env.*.local
+/ui/symfony/config/secrets/prod/prod.decrypt.private.php
+/ui/symfony/public/bundles/
+/ui/symfony/var/
+/ui/symfony/vendor/
+###< symfony/framework-bundle ###
+
+###> phpunit/phpunit ###
+/ui/symfony/phpunit.xml
+/ui/symfony/.phpunit.cache/
+###< phpunit/phpunit ###
+
+###> symfony/asset-mapper ###
+/ui/symfony/public/assets/
+/ui/symfony/assets/vendor/
+###< symfony/asset-mapper ###

@@ -1,0 +1,60 @@
+services:
+  pusher:
+    build:
+      context: ./pusher
+      dockerfile: ./docker/Dockerfile
+    container_name: webhook-pusher
+    ports:
+      - "${PUSHER_PORT}:${PUSHER_PORT}"
+    depends_on:
+      - queue-rabbit
+    networks:
+      - webhook-net
+    environment:
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
+
+  ui-symfony:
+    build:
+      context: ./ui/symfony
+      dockerfile: docker/Dockerfile
+    container_name: webhook-ui-symfony
+    ports:
+      - "${UI_SFY_PORT}:${UI_SFY_PORT}"
+    depends_on:
+      - postgres
+      - queue-rabbit
+    environment:
+      - DATABASE_URL=pgsql://app_usr:app_pass@postgres:5432/webhooks
+    volumes:
+      - ./ui/symfony:/var/www/symfony
+    networks:
+      - webhook-net
+    command: ["php", "-S", "0.0.0.0:${UI_SFY_PORT}", "-t", "public"]
+
+  postgres:
+    image: postgres:15
+    container_name: webhook-db
+    environment:
+      POSTGRES_DB: webhooks
+      POSTGRES_USER: app_usr
+      POSTGRES_PASSWORD: app_pass
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - webhook-net
+
+  queue-rabbit:
+    image: rabbitmq:3-management
+    container_name: webhook-rabbit
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - webhook-net
+
+volumes:
+  postgres-data:
+
+networks:
+  webhook-net:
+    driver: bridge
