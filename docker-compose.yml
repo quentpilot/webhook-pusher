@@ -12,6 +12,9 @@ services:
       - webhook-net
     environment:
       - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
+    volumes:
+      - ./pusher:/app
+    command: reflex -c reflex.conf
 
   ui-symfony:
     build:

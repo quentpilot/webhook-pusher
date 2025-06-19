@@ -3,5 +3,5 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Println("Hello World of Webhooks!")
+	fmt.Println("Hello World of Webhooks :D!")
 }
