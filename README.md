@@ -38,15 +38,15 @@ curl -X POST -H "Authorization: Bearer your_api_key" --location https://localhos
 
 #### Parameters (Json)
 
-> | name        |  type                | description                                          |  required
-> |-----------  |----------------------|------------------------------------------------------| ----------
-> | event       |  string              |  The webhook target type. Used to sort and find them | ✅
-> | target      |  string              |  The user endpoint you want to send data             | ✅
-> | payload     |  json                |  Json data to transfert                              | ✅
-> | throttle    |  integer             |  Maximum send per second. To avoid spamming end-user | ❌
-> | retry       |  integer             |  Maximum send retry before give up                   | ❌
-> | fallback    |  string              |  Fallback endpoint to send if retry gives up         | ❌
-> | sentry      |  boolean             |  Wheter to be notified if a webhook totally failed   | ❌
+> | name        |  type                | description                                              |  required
+> |-----------  |----------------------|----------------------------------------------------------| ----------
+> | event       |  string              |  The webhook target type. Used to sort and find them     | ✅
+> | target      |  string              |  The user endpoint you want to send data                 | ✅
+> | payload     |  json                |  Json object data to transfert                           | ✅
+> | throttle    |  integer             |  Maximum send per second. To avoid spam/DDOS end-user    | ❌
+> | retry       |  integer             |  Maximum send retry before give up                       | ❌
+> | fallback    |  string              |  Fallback endpoint to send if retry gives up             | ❌
+> | sentry      |  boolean             |  Wheter to be notified if a webhook totally failed       | ❌
 
 
 #### Responses (Json)
@@ -58,6 +58,7 @@ curl -X POST -H "Authorization: Bearer your_api_key" --location https://localhos
 > | `401`         | `{"message": "Invalid auth token"}`                             |
 > | `429`         | `{"message": "Too many requests"}`                              |
 > | `503`         | `{"message": "Service Unavailable"}`                            |
+> | `504`         | `{"message": "Request Timeout"}`                                |
 > | `507`         | `{"message": "Plan storage reached"}`                           |
 > | `509`         | `{"message": "Plan limit reached"}`                             |
 
