@@ -1,5 +1,7 @@
 package webhook
 
+import "encoding/json"
+
 type WebhookMessage struct {
 	Id       string         `json:"id"`
 	Event    string         `json:"event"`
@@ -49,6 +51,25 @@ type Webhook struct {
 
 func NewWebhook() *Webhook {
 	return &Webhook{}
+}
+
+func MarshalWebhookMessage(m *WebhookMessage) ([]byte, error) {
+	body, err := json.Marshal(m)
+	if err != nil {
+		return nil, err
+	}
+
+	return body, nil
+}
+
+func UnMarshalWebhookMessage(m []byte) (*WebhookMessage, error) {
+	decorated := &WebhookMessage{}
+
+	err := json.Unmarshal(m, &decorated)
+	if err != nil {
+		return nil, err
+	}
+	return decorated, nil
 }
 
 /* func NewWebhookFromRequest(uuid string, req *handlers.SendRequest) *Webhook {

@@ -31,10 +31,23 @@ func NewAmqpPublisher(config *config.AmqpPubConfig) *AmqpPublisher {
 
 func (p *AmqpPublisher) Publish(message *webhook.WebhookMessage) error {
 
-	_, err := p.conn.Channel()
+	ch, err := p.conn.Channel()
 	if err != nil {
 		return fmt.Errorf("failed to open channel: %v", err.Error())
 	}
+	defer ch.Close()
+	defer p.conn.Close()
 
-	return fmt.Errorf("publisher not implemented yet, config: %#v", p.config)
+	body, err := webhook.MarshalWebhookMessage(message)
+	if err != nil {
+		return fmt.Errorf("cannot marshal WebhookMessage: %s", err)
+	}
+
+	return ch.Publish("", p.config.Queue, false, false, amqp091.Publishing{
+		ContentType: "application/json",
+		Body:        body,
+		Type:        "initial",
+	})
+
+	//return fmt.Errorf("publisher not implemented yet, config: %#v", p.config)
 }

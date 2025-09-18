@@ -1,13 +1,13 @@
 # webhook-pusher
-Webhooks handler to avoid pain implementations
+Webhooks handler to avoid pain events implementations
 
 # Goal
 Stop throwing your webhooks around the Web without any transfer assurance: Blind Mode Avoided.
 
-- Get an advanced retry system in case endpoint fails.
+- Get an advanced retry system when endpoint calls fails.
 - Follow all your webhooks from a web interface
 - Manually inspect and retry each webhook
-- Test your webhook integration
+- Test your webhook integration using sandbox
 
 # API Integration
 ## Quick Start
@@ -22,7 +22,7 @@ curl -X POST -H "Authorization: Bearer your_api_key" --location https://localhos
 
 ## Documentation
 - Navigate to https://localhost:8001/api/swagger to retrieve a Swagger documentation
-- Navigate to https://localhost:8001/api/doc to retrieve complete documentation
+- Navigate to https://localhost:8001/api/doc to retrieve the complete documentation
 
 ## Main Endpoint Documentation
 ### Send Webhook
@@ -41,12 +41,12 @@ curl -X POST -H "Authorization: Bearer your_api_key" --location https://localhos
 > | name        |  type                | description                                              |  required
 > |-----------  |----------------------|----------------------------------------------------------| ----------
 > | event       |  string              |  The webhook target type. Used to sort and find them     | ✅
-> | target      |  string              |  The user endpoint you want to send data                 | ✅
+> | target      |  string              |  The end-user endpoint you want to send data             | ✅
 > | payload     |  json                |  Json object data to transfert                           | ✅
 > | throttle    |  integer             |  Maximum send per second. To avoid spam/DDOS end-user    | ❌
 > | retry       |  integer             |  Maximum send retry before give up                       | ❌
 > | fallback    |  string              |  Fallback endpoint to send if retry gives up             | ❌
-> | sentry      |  boolean             |  Wheter to be notified if a webhook totally failed       | ❌
+> | sentry      |  boolean             |  Whether to be notified if a webhook totally failed      | ❌
 
 
 #### Responses (Json)
