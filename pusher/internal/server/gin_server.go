@@ -6,7 +6,10 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/quentpilot/webhook-pusher/internal/application/webhook"
+	"github.com/quentpilot/webhook-pusher/internal/config"
 	"github.com/quentpilot/webhook-pusher/internal/handlers"
+	wi "github.com/quentpilot/webhook-pusher/internal/infra/amqp/webhook"
 	"github.com/quentpilot/webhook-pusher/internal/middleware"
 )
 
@@ -26,12 +29,23 @@ func NewGinServer(c *HttpConfig) *GinServer {
 func (s *GinServer) Load() {
 	slog.Info("Loading API endpoints")
 
+	config := &config.AmqpPubConfig{
+		Host:  "amqp://guest:guest@queue-rabbit",
+		Port:  5672,
+		Queue: "webhook-sender",
+	}
+
+	pub := wi.NewAmqpPublisher(config)
+
+	publisher := webhook.NewPublishWebhook(pub)
+	handler := handlers.NewWebhookHandler(publisher)
+
 	auth := s.Engine.Group("/",
 		middleware.Timeout(5*time.Second),
 		middleware.BindAndValidate[handlers.SendRequest](),
 	)
 
-	auth.POST("/send", handlers.SendWebhook())
+	auth.POST("/send", handler.Send())
 }
 
 func (s *GinServer) Run() {

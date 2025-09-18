@@ -23,13 +23,14 @@
 # Go workspace file
 /pusher/go.work
 /pusher/go.work.sum
+/pusher/main
 
 # env file
 .env
 
 # Editor/IDE
 # .idea/
-# .vscode/
+.vscode/
 
 
 
